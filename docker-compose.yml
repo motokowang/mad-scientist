@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+    thing1:
+        build: ./thing1
+        container_name: thing1
+        links:
+        - thing2:thing1
+        ports:
+        - 7776:80
+    thing2:
+        build: ./thing2
+        container_name: thing2
+        ports:
+        - 7777:7777
+    bouncycastle:
+        image: postgres:latest
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: 'yet_another_leaked_credential'
+        ports:
+        - 5432:5432
+        expose:
+        - 5432
+        volumes:
+        - bouncycastle:/var/lib/postgres
+volumes:
+    bouncycastle:
